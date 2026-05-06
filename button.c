@@ -36,5 +36,7 @@ void ICACHE_FLASH_ATTR button_init(void)
 
 void button_pressed(int pin)
 {
+	if (pin < 0)
+		return;
 	os_printf("Button %d\r\n", pin);
 }

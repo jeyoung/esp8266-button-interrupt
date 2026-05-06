@@ -3,7 +3,6 @@
 #include "user_interface.h"
 #include "uart.h"
 
-#include "main.h"
 #include "button.h"
 
 static os_timer_t os_timer;

@@ -33,20 +33,27 @@ void ICACHE_FLASH_ATTR user_init(void)
 // - Physical data
 // - System parameter
 // The location and length of these are from the 2A SDK getting started guide
+#define RF_CAL_ADDR     0xfb000
+#define RF_CAL_SIZE     0x1000
+#define PHY_DATA_ADDR   0xfc000
+#define PHY_DATA_SIZE   0x1000
+#define SYS_PARAM_ADDR  0xfd000
+#define SYS_PARAM_SIZE  0x3000
+
 void ICACHE_FLASH_ATTR user_pre_init(void)
 {
 	bool rc = false;
 	static const partition_item_t part_table[] = 
 	{
 		{SYSTEM_PARTITION_RF_CAL,
-			0xfb000,
-			0x1000},
+			RF_CAL_ADDR,
+			RF_CAL_SIZE},
 		{SYSTEM_PARTITION_PHY_DATA,
-			0xfc000,
-			0x1000},
+			PHY_DATA_ADDR,
+			PHY_DATA_SIZE},
 		{SYSTEM_PARTITION_SYSTEM_PARAMETER,
-			0xfd000,
-			0x3000},
+			SYS_PARAM_ADDR,
+			SYS_PARAM_SIZE},
 	};
 
 	// This isn't an ideal approach but there's not much point moving on

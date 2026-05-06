@@ -10,8 +10,8 @@ PROGRAM = main
 ESPTOOL = esptool
 BAUDRATE = 921600
 
-.PHONY:
-all: clean $(PROGRAM)
+.PHONY: all flash clean
+all: $(PROGRAM)
 
 $(PROGRAM)-0x00000.bin: $(PROGRAM)
 	$(ESPTOOL) elf2image $^

@@ -17,8 +17,7 @@ void button_pressed(int button_id);
  */
 static void on_timer_main(void *arg)
 {
-	if (++elapsed % 1000 == 0) 
-		os_printf("%d >> \n", elapsed);
+	++elapsed;
 	os_timer_arm(&os_timer, 1, 0);
 }
 

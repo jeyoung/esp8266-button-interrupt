@@ -4,53 +4,22 @@
 #include "uart.h"
 
 #include "main.h"
-
-#define PIN_BUTTON 2
-#define PIN_LED 0
+#include "button.h"
 
 static os_timer_t os_timer;
-volatile static int elapsed = 0, elapsed_debounce = 0;
+volatile int elapsed = 0;
 
-void button_pressed(int button_id);
-
-/* Main timer tick handler
- */
 static void on_timer_main(void *arg)
 {
 	++elapsed;
 	os_timer_arm(&os_timer, 1, 0);
 }
 
-/* Pin interrupt handler
- */
-static void handle_gpio(void *arg)
-{
-	uint32 status = GPIO_REG_READ(GPIO_STATUS_ADDRESS);
-	GPIO_REG_WRITE(GPIO_STATUS_W1TC_ADDRESS, status);
-	int pin = status ? (__builtin_ffs(status) - 1) : -1;
-	if (elapsed_debounce == 0 || elapsed - elapsed_debounce >= 30) {
-		elapsed_debounce = elapsed;
-		button_pressed(pin);
-	}
-}
-
-void button_pressed(int button_id)
-{
-	os_printf("Button %d\r\n", button_id);
-}
-
-/* User-defined intialisation
- */
 void ICACHE_FLASH_ATTR user_init(void)
 {
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
 
-	gpio_init();
-	gpio_pin_intr_state_set(GPIO_ID_PIN(PIN_BUTTON), GPIO_PIN_INTR_NEGEDGE);
-	gpio_pin_intr_state_set(GPIO_ID_PIN(PIN_LED), GPIO_PIN_INTR_NEGEDGE);
-	ETS_GPIO_INTR_ATTACH(&handle_gpio, (void *)NULL);
-	ETS_GPIO_INTR_ENABLE();
-	GPIO_DIS_OUTPUT(PIN_BUTTON);
+	button_init();
 
 	os_timer_disarm(&os_timer);
 	os_timer_setfn(&os_timer, &on_timer_main, (void *)NULL);

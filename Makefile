@@ -16,9 +16,13 @@ all: $(PROGRAM)
 $(PROGRAM)-0x00000.bin: $(PROGRAM)
 	$(ESPTOOL) elf2image $^
 
-$(PROGRAM): $(PROGRAM).o
+$(PROGRAM): $(PROGRAM).o button.o
 
 $(PROGRAM).o: $(PROGRAM).c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+button.o: button.c
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 flash: $(PROGRAM)-0x00000.bin
 	$(ESPTOOL) -b $(BAUDRATE) write_flash 0x0 $(PROGRAM)-0x00000.bin 0x10000 $(PROGRAM)-0x10000.bin

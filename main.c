@@ -28,9 +28,10 @@ static void handle_gpio(void *arg)
 {
 	uint32 status = GPIO_REG_READ(GPIO_STATUS_ADDRESS);
 	GPIO_REG_WRITE(GPIO_STATUS_W1TC_ADDRESS, status);
+	int pin = status ? (__builtin_ffs(status) - 1) : -1;
 	if (elapsed_debounce == 0 || elapsed - elapsed_debounce >= 30) {
 		elapsed_debounce = elapsed;
-		button_pressed(status);
+		button_pressed(pin);
 	}
 }
 

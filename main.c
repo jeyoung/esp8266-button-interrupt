@@ -7,10 +7,13 @@
 
 static os_timer_t os_timer;
 volatile uint32 elapsed = 0;
+static uint32 heartbeat = 0;
 
 static void on_timer_main(void *arg)
 {
 	++elapsed;
+	if (++heartbeat % 1000 == 0)
+		os_printf(".");
 	os_timer_arm(&os_timer, 1, 0);
 }
 

@@ -2,4 +2,6 @@
 *.bin
 *.hex
 *.o
+main
+tags
 

@@ -5,10 +5,11 @@
 
 static uint32 elapsed_debounce = 0;
 
-static bool ICACHE_FLASH_ATTR debounce_ok(void)
+static bool debounce_ok(void)
 {
-	if (elapsed_debounce == 0 || elapsed - elapsed_debounce >= DEBOUNCE_MS) {
-		elapsed_debounce = elapsed;
+	uint32 now = elapsed;
+	if (elapsed_debounce == 0 || now - elapsed_debounce >= DEBOUNCE_MS) {
+		elapsed_debounce = now;
 		return true;
 	}
 	return false;

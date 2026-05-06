@@ -54,7 +54,7 @@ void ICACHE_FLASH_ATTR user_init(void)
 
 	os_timer_disarm(&os_timer);
 	os_timer_setfn(&os_timer, &on_timer_main, (void *)NULL);
-	os_timer_arm(&os_timer, 25, 0);
+	os_timer_arm(&os_timer, 1, 0);
 }
 
 // user_pre_init is required from SDK v3.0.0 onwards

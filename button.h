@@ -7,7 +7,7 @@
 #define PIN_LED 0
 #define DEBOUNCE_MS 30
 
-extern volatile int elapsed;
+extern volatile uint32 elapsed;
 
 void button_init(void);
 void button_pressed(int pin);

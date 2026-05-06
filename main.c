@@ -7,7 +7,7 @@
 #include "button.h"
 
 static os_timer_t os_timer;
-volatile int elapsed = 0;
+volatile uint32 elapsed = 0;
 
 static void on_timer_main(void *arg)
 {
@@ -53,10 +53,13 @@ void ICACHE_FLASH_ATTR user_pre_init(void)
 	// This isn't an ideal approach but there's not much point moving on
 	// unless or until this has succeeded cos otherwise the SDK will just
 	// barf and refuse to call user_init()
-	while (!rc)
+	while (!rc) {
 		rc = system_partition_table_regist(part_table,
 				sizeof(part_table)/sizeof(part_table[0]),
 				2);
+		if (!rc)
+			os_printf("Failed to register partition table, retrying...\r\n");
+	}
 
 	return;
 }

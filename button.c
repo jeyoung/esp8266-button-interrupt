@@ -3,7 +3,7 @@
 
 #include "button.h"
 
-static int elapsed_debounce = 0;
+static uint32 elapsed_debounce = 0;
 
 static bool ICACHE_FLASH_ATTR debounce_ok(void)
 {

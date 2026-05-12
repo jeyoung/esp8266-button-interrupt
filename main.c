@@ -58,16 +58,16 @@ void ICACHE_FLASH_ATTR user_pre_init(void)
 			SYS_PARAM_SIZE},
 	};
 
-	// This isn't an ideal approach but there's not much point moving on
-	// unless or until this has succeeded cos otherwise the SDK will just
-	// barf and refuse to call user_init()
-	while (!rc) {
+	int retries = 10;
+	while (!rc && retries--) {
 		rc = system_partition_table_regist(part_table,
 				sizeof(part_table)/sizeof(part_table[0]),
 				2);
 		if (!rc)
 			os_printf("Failed to register partition table, retrying...\r\n");
 	}
+	if (!rc)
+		system_restart();
 
 	return;
 }

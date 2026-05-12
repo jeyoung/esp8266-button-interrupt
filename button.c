@@ -3,16 +3,22 @@
 
 #include "button.h"
 
+static uint32 elapsed_button = 0;
 static uint32 elapsed_debounce = 0;
 
 static bool debounce_ok(void)
 {
-	uint32 now = elapsed;
+	uint32 now = elapsed_button;
 	if (elapsed_debounce == 0 || now - elapsed_debounce >= DEBOUNCE_MS) {
 		elapsed_debounce = now;
 		return true;
 	}
 	return false;
+}
+
+void button_tick(void)
+{
+	++elapsed_button;
 }
 
 static void ICACHE_RAM_ATTR handle_gpio(void *arg)

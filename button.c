@@ -15,13 +15,16 @@ static bool debounce_ok(void)
 	return false;
 }
 
-static void handle_gpio(void *arg)
+static void ICACHE_RAM_ATTR handle_gpio(void *arg)
 {
 	uint32 status = GPIO_REG_READ(GPIO_STATUS_ADDRESS);
 	GPIO_REG_WRITE(GPIO_STATUS_W1TC_ADDRESS, status);
-	int pin = status ? (__builtin_ffs(status) - 1) : -1;
-	if (debounce_ok())
-		button_pressed(pin);
+	while (status) {
+		int pin = __builtin_ffs(status) - 1;
+		status &= ~(1 << pin);
+		if (debounce_ok())
+			button_pressed(pin);
+	}
 }
 
 void ICACHE_FLASH_ATTR button_init(void)

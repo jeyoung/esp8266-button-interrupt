@@ -28,5 +28,5 @@ flash: $(PROGRAM)-0x00000.bin
 	$(ESPTOOL) -b $(BAUDRATE) write_flash 0x0 $(PROGRAM)-0x00000.bin 0x10000 $(PROGRAM)-0x10000.bin
 
 clean:
-	$(RM) -f $(PROGRAM) $(PROGRAM).o $(PROGRAM)-0x00000.bin $(PROGRAM)-0x10000.bin lib/*.o
+	$(RM) -f $(PROGRAM) $(PROGRAM).o button.o $(PROGRAM)-0x00000.bin $(PROGRAM)-0x10000.bin
 	$(RM) -f libbutton.a

@@ -14,12 +14,12 @@ ESP8266 button interrupt handler — a minimal embedded C application for the ES
 ## Repository Structure
 
 ```
-main.c          — Application entry point: GPIO init, timer, ISR, debounce logic
-main.h          — Header guard (minimal)
+main.c          — Application entry point: timer, heartbeat, partition table
+button.c        — Button handling: GPIO init, ISR, debounce logic
+button.h        — Button module header: pin defines, function declarations
 Makefile        — Build system: compile, link, flash, clean
-user_config.h   — Empty (required by SDK)
-tags            — ctags index
-.gitignore      — Ignores *.swp, *.bin, *.hex, *.o
+user_config.h   — Stub (required by SDK)
+.gitignore      — Ignores *.swp, *.bin, *.hex, *.o, tags, main
 LICENSE         — BSD 2-Clause
 ```
 
@@ -42,8 +42,9 @@ LICENSE         — BSD 2-Clause
 
 - **GPIO button (pin 2):** Configured for falling-edge interrupt (`GPIO_PIN_INTR_NEGEDGE`)
 - **GPIO LED (pin 0):** Also configured for falling-edge interrupt
-- **Debounce:** Software debounce using a 1 ms timer counter (`elapsed`); requires 30 ms gap between successive triggers
-- **Timer:** `os_timer_arm` re-arms the timer every 1 ms in the callback
+- **Debounce:** Software debounce using a 1 ms timer counter; requires 30 ms gap between successive triggers
+- **Timer:** `os_timer_arm` re-arms the timer every 1 ms in the callback; `button_tick` called each tick
+- **ISR:** Located in IRAM via `ICACHE_RAM_ATTR`; processes all pending GPIO status bits
 - **UART:** Initialized at 115200 baud for debug output
 - **Partition table:** Registered in `user_pre_init()` (required by SDK v3.0.0+)
 
